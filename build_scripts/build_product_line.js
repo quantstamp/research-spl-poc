@@ -1,6 +1,7 @@
 const fs = require('fs-extra');
 const path = require('path');
 const { exec } = require('child_process');
+const string_formatter = require('lodash');
 
 // Define the default directory and output directory base path
 const defaultDir = './contracts/product_lines';
@@ -9,7 +10,8 @@ const outputBaseDir = './contracts/src';
 // Function to run the preprocessor command
 const runPreprocessor = (filePath, featureFlag, outputDir) => {
   const fileName = path.basename(filePath, '.spl');
-  const formattedFlag = featureFlag ? featureFlag.replace(/_/g, '').toLowerCase().replace(/(?:^|\s)\S/g, a => a.toUpperCase()) : '';
+  const camelCaseFeatureFlag = string_formatter.camelCase(featureFlag);
+  const formattedFlag = featureFlag ? camelCaseFeatureFlag.charAt(0).toUpperCase() + camelCaseFeatureFlag.slice(1) : '';
   const outputFileName = featureFlag ? `${fileName}${formattedFlag}.sol` : `${fileName}.sol`;
   const outputPath = path.join(outputDir, outputFileName);
   const flag = featureFlag ? `-D ${featureFlag}` : '';
