@@ -4,7 +4,7 @@ pragma solidity 0.8.24;
 contract Counter {
     uint256 public number;
 
-#ifdef HAS_OWNER
+#ifdef CONFIG_HAS_OWNER
     // An address type variable is used to store ethereum accounts.
     address public owner;
     modifier onlyOwner() {
@@ -14,7 +14,7 @@ contract Counter {
 #endif
 
     constructor() {
-#ifdef HAS_OWNER
+#ifdef CONFIG_HAS_OWNER
         owner = msg.sender;
 #endif
     }
@@ -27,7 +27,7 @@ contract Counter {
         number++;
     }
 
-#ifdef HAS_OWNER
+#ifdef CONFIG_HAS_OWNER
     function changeOwner(address _newOwner) public onlyOwner
     {
         require(_newOwner != address(0), "Not valid address");

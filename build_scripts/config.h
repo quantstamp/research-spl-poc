@@ -1,2 +1,2 @@
 /* Automatically generated from .config */
-#define HAS_OWNER 1
+#define CONFIG_HAS_OWNER 1
