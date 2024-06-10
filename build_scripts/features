@@ -1,0 +1,7 @@
+menu "SPL Token"
+
+config HAS_OWNER
+    bool "Enable owner feature"
+    default n
+
+endmenu
