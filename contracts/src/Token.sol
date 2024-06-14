@@ -1,5 +1,6 @@
 pragma solidity 0.8.24;
-contract Token {
+import "./interfaces/IToken.sol";
+contract Token is IToken {
     string public name = "Name Goes here";
     string public symbol = "TICKER";
     uint256 public totalSupply = 21000000;
@@ -23,7 +24,7 @@ contract Token {
     function balanceOf(address account) external view returns (uint256) {
         return balances[account];
     }
-    function changeOwner(address _newOwner) public onlyOwner
+    function changeOwner(address _newOwner) external onlyOwner
     {
         require(_newOwner != address(0), "Not valid address");
         owner = _newOwner;

@@ -1,19 +1,19 @@
 const fs = require('fs-extra');
 const path = require('path');
 const { exec } = require('child_process');
+require('dotenv').config();
 
-// Define the default directory and output directory base path
-const defaultDir = './contracts/product_lines';
-const outputBaseDir = './contracts/src';
-const configFile = './build_scripts/config.h';
-const splExtension = '.spl';
+// Define the source and output directories for contracts and tests
+const sourceContractsDir = process.env.SPL_SRC_CONTRACTS_DIR;
+const sourceTestDir = process.env.SPL_SRC_TESTS_DIR;
+const outputContractsDir = process.env.SPL_OUT_CONTRACTS_DIR;
+const outputTestDir = process.env.SPL_OUT_TESTS_DIR;
+const configFile = process.env.SPL_CONFIG_HEADER;
 const solExtension = '.sol';
+const testExtension = '.sol';
 
 // Function to run the preprocessor command
-const runPreprocessor = (filePath, outputDir) => {
-  const fileName = path.basename(filePath, splExtension);
-  const outputFileName = `${fileName}${solExtension}`;
-  const outputPath = path.join(outputDir, outputFileName);
+const runPreprocessor = (filePath, outputPath) => {
 
   const command = `gcc -xc -E -P -imacros ${configFile} ${filePath} -o ${outputPath}`;
   exec(command, (err, _, stderr) => {
@@ -27,7 +27,7 @@ const runPreprocessor = (filePath, outputDir) => {
 
 // Function to run the forge build command
 const runForgeBuild = () => {
-  exec(`forge install && forge build`, (err, _, stderr) => {
+  exec(`cd contracts && forge install && forge build`, (err, _, stderr) => {
     if (err) {
       console.error(`Error building product line: ${stderr}`);
       return;
@@ -37,7 +37,7 @@ const runForgeBuild = () => {
 }
 
 // Main function to process files
-const processFiles = () => {
+const processFiles = (sourceDir, outputDir, file_extension) => {
 
   if (!fs.existsSync(configFile)) {
     console.error(`Configuration file ${configFile} does not exist.`);
@@ -45,21 +45,32 @@ const processFiles = () => {
   }
 
   // Ensure the output directory exists (clear if it does)
-  fs.ensureDirSync(outputBaseDir);
-  fs.emptyDirSync(outputBaseDir);
+  fs.ensureDirSync(outputDir);
+  fs.emptyDirSync(outputDir);
 
-  // Get all .spl files in the default directory
-  const files = fs.readdirSync(defaultDir).filter(file => path.extname(file) === splExtension);
+  // Get all product line files in the src directory recursively
+  // This will only include files with the given extension
+  const files = fs.readdirSync(sourceDir, { recursive: true }).filter(file => path.extname(file) === file_extension);
 
   // Process each file
   files.forEach(file => {
-    const filePath = path.join(defaultDir, file);
-    runPreprocessor(filePath, outputBaseDir);
-  });
+    const filePath = path.join(sourceDir, file);
+    const subDir = path.dirname(file);
+    const outputSubDir = path.join(outputDir, subDir);
 
-  // run forge build 
-  runForgeBuild();
+    if (!fs.existsSync(outputSubDir)) {
+      fs.mkdirSync(outputSubDir, { recursive: true });
+    }
+
+    const outputFilePath = path.join(outputDir, file);
+
+    runPreprocessor(filePath, outputFilePath);
+  });
 };
 
 // Run the script
-processFiles();
+processFiles(sourceContractsDir, outputContractsDir, solExtension);
+processFiles(sourceTestDir, outputTestDir, testExtension);
+
+// run forge build 
+runForgeBuild();

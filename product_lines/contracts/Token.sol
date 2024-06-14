@@ -2,7 +2,10 @@
 // THIS CODE IS SIMPLIFIED AND WAS CREATED FOR TESTING 
 // PURPOSES ONLY. DO NOT USE THIS CODE IN PRODUCTION!
 pragma solidity 0.8.24;
-contract Token {
+
+import "./interfaces/IToken.sol";
+
+contract Token is IToken {
     string public name = "Name Goes here";
     string public symbol = "TICKER";
     // The fixed amount of tokens, stored in an unsigned integer type variable.
@@ -43,7 +46,7 @@ contract Token {
     }
 
 #ifdef CONFIG_HAS_OWNER
-    function changeOwner(address _newOwner) public onlyOwner
+    function changeOwner(address _newOwner) external onlyOwner
     {
         require(_newOwner != address(0), "Not valid address");
         owner = _newOwner;
