@@ -9,8 +9,8 @@ const sourceTestDir = process.env.SPL_SRC_TESTS_DIR;
 const outputContractsDir = process.env.SPL_OUT_CONTRACTS_DIR;
 const outputTestDir = process.env.SPL_OUT_TESTS_DIR;
 const configFile = process.env.SPL_CONFIG_HEADER;
-const solExtension = '.sol';
-const testExtension = '.sol';
+const testExtensions = process.env.SPL_TEST_EXTENSIONS.split(',') || [".sol", ".js", ".ts"];
+const solExtension = ['.sol'];
 
 // Function to run the preprocessor command
 const runPreprocessor = (filePath, outputPath) => {
@@ -26,7 +26,13 @@ const runPreprocessor = (filePath, outputPath) => {
 };
 
 // Main function to process files
-const processFiles = (sourceDir, outputDir, file_extension) => {
+const processFiles = (sourceDir, outputDir, fileExtensions) => {
+
+  // Check if fileExtensions is an array of strings
+  if (!Array.isArray(fileExtensions) || !fileExtensions.every(ext => typeof ext === 'string')) {
+    console.error('fileExtensions must be an array of strings.');
+    process.exit(1);
+  }
 
   if (!fs.existsSync(configFile)) {
     console.error(`Configuration file ${configFile} does not exist.`);
@@ -39,7 +45,7 @@ const processFiles = (sourceDir, outputDir, file_extension) => {
 
   // Get all product line files in the src directory recursively
   // This will only include files with the given extension
-  const files = fs.readdirSync(sourceDir, { recursive: true }).filter(file => path.extname(file) === file_extension);
+  const files = fs.readdirSync(sourceDir, { recursive: true }).filter(file => fileExtensions.includes(path.extname(file)));
 
   // Process each file
   files.forEach(file => {
@@ -59,5 +65,5 @@ const processFiles = (sourceDir, outputDir, file_extension) => {
 
 // Run the script
 processFiles(sourceContractsDir, outputContractsDir, solExtension);
-processFiles(sourceTestDir, outputTestDir, testExtension);
+processFiles(sourceTestDir, outputTestDir, testExtensions);
 

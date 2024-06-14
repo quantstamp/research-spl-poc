@@ -1,10 +1,17 @@
-# research-spl-poc
+## Research SPL POC
 
-* The product line files, having the `.spl` extension, are located in the `contracts/product_lines` directory. This is were devs will add their solidity code with the different features they want to include.
+The project structure includes:
 
-* The build script is located in the `build_scripts` directory. Maybe we can add a configuration file which would help simplify the script and create better outputs. To generate the `config.h` file, do the following actions:
- 1. run `kconfig-conf features`. This will create a `.config` file with the features you want to include. You might need to install `https://ports.macports.org/port/kconfig-frontends/`.
- 2. run `./config2header.sh`. This will parse the generated `.config` file and generate a `config.h` file with the features you want to include.
+- **Product Line Files**: Located in `./product_lines`, where developers add Solidity code for different features.
+- **Prebuild Script**: Found in `prebuild_scripts/`, configured via `.env` and `config.h`.
+- **Generated Smart Contracts and Tests**: Located in `contracts/src` and `contracts/test` (configurable via the `.env` file).
 
-* To run the build script run the script from the root directory: `node build_scripts/build_product_line.js`. The output of the build script will be located in the `contracts/src` directory.
+#### Steps to Generate `config.h`:
 
+1. Modify the `features` file to add/remove desired features.
+2. Run `kconfig-conf features` to create a `.config` file (requires [`kconfig-frontends`](https://ports.macports.org/port/kconfig-frontends/)).
+3. Execute `./config2header.sh` to generate `config.h` from `.config`.
+
+#### Running the Prebuild Script:
+
+From the root directory, run `node prebuild_scripts/build_product_line.js`.
