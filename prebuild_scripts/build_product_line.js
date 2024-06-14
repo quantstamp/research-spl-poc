@@ -25,17 +25,6 @@ const runPreprocessor = (filePath, outputPath) => {
   });
 };
 
-// Function to run the forge build command
-const runForgeBuild = () => {
-  exec(`cd contracts && forge install && forge build`, (err, _, stderr) => {
-    if (err) {
-      console.error(`Error building product line: ${stderr}`);
-      return;
-    }
-    console.log(`Built product line`);
-  });
-}
-
 // Main function to process files
 const processFiles = (sourceDir, outputDir, file_extension) => {
 
@@ -72,5 +61,3 @@ const processFiles = (sourceDir, outputDir, file_extension) => {
 processFiles(sourceContractsDir, outputContractsDir, solExtension);
 processFiles(sourceTestDir, outputTestDir, testExtension);
 
-// run forge build 
-runForgeBuild();
