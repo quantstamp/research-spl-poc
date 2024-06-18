@@ -43,9 +43,8 @@ const processFiles = (sourceDir, outputDir, fileExtensions) => {
     return;
   }
 
-  // Ensure the output directory exists (clear if it does)
+  // Ensure the output directory exists
   fs.ensureDirSync(outputDir);
-  fs.emptyDirSync(outputDir);
 
   // Get all product line files in the src directory recursively
   // This will only include files with the given extension

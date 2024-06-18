@@ -3,9 +3,7 @@
 // PURPOSES ONLY. DO NOT USE THIS CODE IN PRODUCTION!
 pragma solidity 0.8.24;
 
-import "./interfaces/IToken.sol";
-
-contract Token is IToken {
+contract Token {
     string public name = "Name Goes here";
     string public symbol = "TICKER";
     // The fixed amount of tokens, stored in an unsigned integer type variable.

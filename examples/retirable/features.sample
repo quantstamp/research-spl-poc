@@ -1,0 +1,7 @@
+menu "Retirable"
+
+config MAINNET
+    bool "Target Ethereum Mainnet"
+    default y
+
+endmenu

@@ -13,10 +13,5 @@ grep "CONFIG_" $CONFIG_FILE | while read -r line; do
     elif echo $line | grep -q "=n"; then
         macro=$(echo $line | sed 's/=n//' | tr 'a-z' 'A-Z')
         echo "/* #undef $macro */" >> $HEADER_FILE
-    else
-        # Handle other types of configs (e.g., strings or integers)
-        macro=$(echo $line | cut -d'=' -f1 | tr 'a-z' 'A-Z')
-        value=$(echo $line | cut -d'=' -f2)
-        echo "#define $macro $value" >> $HEADER_FILE
     fi
 done
