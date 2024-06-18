@@ -13,6 +13,13 @@ The repository contains:
 1. If you haven't already, download and install [node.js and nvm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
 2. Run `npm i` to install dependencies for `prebuild-scripts/`
 
+
+### tl;dr
+1. Annotate Solidity files with C preprocessor macros and place files in some directory within your project, e.g., `contracts-spl/`
+2. Write (or generate with KConfig tools and our script) `config.h` file that contains flags that you want to enable, e.g., `#define CONFIG_HAS_OWNER 1`.
+3. Write `.env` file and then run `node prebuild-scripts/prebuild-variant.js`.
+4. Build your project as usually.
+
 ### Prebuild Scripts
 
 - `prebuild-variant.js` - a Node.js script that runs C language preprocessor from `gcc` over Solidity source code files to generate specific variants. It expect a set of parameters defined in project's `.env` file (see below). Apart from the source code, the tool requires a C header file with feature flags that enable/disable specific parts of the Solidity source code to include/exclude.
