@@ -28,6 +28,10 @@ const runPreprocessor = (filePath, outputPath) => {
 // Main function to process files
 const processFiles = (sourceDir, outputDir, fileExtensions) => {
 
+  if (!sourceDir || "" === sourceDir) {
+    return;
+  }
+
   // Check if fileExtensions is an array of strings
   if (!Array.isArray(fileExtensions) || !fileExtensions.every(ext => typeof ext === 'string')) {
     console.error('fileExtensions must be an array of strings.');
