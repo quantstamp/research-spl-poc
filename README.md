@@ -43,12 +43,12 @@ Configuration options in the `.env` file:
 
 ```
 cd examples/owner
+cp .env.sample .env
 
 # copy a sample configuration file written by hand
 cp config.h.sample config.h
 
 # generate a specific variant
-cp .env.sample .env
 node ../../prebuild-scripts/prebuild-variant.js
 
 # install dependencies and compile as usually
@@ -60,6 +60,7 @@ npx hardhat compile
 
 ```
 cd examples/retirable
+cp .env.sample .env
 
 # use an interactive tool to generate a configuration file
 kconfig-conf features.sample
@@ -67,7 +68,6 @@ kconfig-conf features.sample
 ../../prebuild-scripts/config2header.sh
 
 # generate a specific variant
-cp .env.sample .env
 node ../../prebuild-scripts/prebuild-variant.js
 
 # install dependencies and compile as usually
