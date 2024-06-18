@@ -43,9 +43,15 @@ Configuration options in the `.env` file:
 
 ```
 cd examples/owner
-cp config.h.sample config.h # copy a sample configuration file written by hand
+
+# copy a sample configuration file written by hand
+cp config.h.sample config.h
+
+# generate a specific variant
 cp .env.sample .env
 node ../../prebuild-scripts/prebuild-variant.js
+
+# install dependencies and compile as usually
 npm i
 npx hardhat compile	
 ```
@@ -54,10 +60,17 @@ npx hardhat compile
 
 ```
 cd examples/retirable
-kconfig-conf features.sample # use an interactive file to generate a configuration file
-../../prebuild-scripts/config2header.sh # generate the `config.h` file
+
+# use an interactive tool to generate a configuration file
+kconfig-conf features.sample
+# generate the `config.h` file
+../../prebuild-scripts/config2header.sh
+
+# generate a specific variant
 cp .env.sample .env
 node ../../prebuild-scripts/prebuild-variant.js
+
+# install dependencies and compile as usually
 npm i
 npx hardhat compile	
 ```
