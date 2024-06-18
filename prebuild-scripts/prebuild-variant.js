@@ -9,7 +9,7 @@ const sourceTestDir = process.env.SPL_SRC_TESTS_DIR;
 const outputContractsDir = process.env.SPL_OUT_CONTRACTS_DIR;
 const outputTestDir = process.env.SPL_OUT_TESTS_DIR;
 const configFile = process.env.SPL_CONFIG_HEADER;
-const testExtensions = process.env.SPL_TEST_EXTENSIONS.split(',') || [".sol", ".js", ".ts"];
+const testExtensions = process.env.SPL_TEST_EXTENSIONS ? process.env.SPL_TEST_EXTENSIONS.split(',') : [".sol", ".js", ".ts"];
 const solExtension = ['.sol'];
 
 // Function to run the preprocessor command
