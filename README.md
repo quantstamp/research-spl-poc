@@ -21,23 +21,23 @@ The repository contains:
 
 ### Prebuild Scripts
 
-- `prebuild-variant.js` - a Node.js script that runs C language preprocessor from `gcc` over Solidity source code files to generate specific variants. It expect a set of parameters defined in project's `.env` file (see below). Apart from the source code, the tool requires a C header file with feature flags that enable/disable specific parts of the Solidity source code to include/exclude.
-- `config2header.sh` - you may find this script useful if you use KConfig configuration tool [`kconfig-conf`](https://ports.macports.org/port/kconfig-frontends/) for configuting the smart contract family (to specify a variant). The script takes the output file `.config` of a KConfig configuration tool and generates the header file that `prebuild-variant.js` can consume. 
+- `prebuild-variant.js` - a Node.js script that runs `gcc` C language preprocessor over Solidity source code files to generate a specific variant. It expects a set of parameters defined in project's `.env` file (see below). Apart from the source code, the tool requires a C header file with feature flags that enable/disable specific parts of the Solidity source code.
+- `config2header.sh` - you may find this script useful if you use KConfig configuration tool [`kconfig-conf`](https://ports.macports.org/port/kconfig-frontends/) for configuting the smart contract family (to obtain specify a variant). The script takes the output file `.config` of the KConfig configuration tool and generates the header file that `prebuild-variant.js` can consume. 
 
 ### Usage
 
-In a typical Solidity project if you want to compile code, you can run `npx hardhat compile` to obtain bytecode that can be deployed on the blockchain. Our scripts add two stages that precede compilation: 1) configuration; and 2) prebuild. During the first stage developer specifies which specific smart contract variant will be generated. During the second stage preprocessor generates source code. Once that's done, you can procede with compilation as usually.
+In a typical Solidity project, if you want to compile code, you can run `npx hardhat compile` to obtain bytecode that can be deployed on the blockchain. Our scripts add two stages that precede compilation: 1) configuration; and 2) prebuild. During the first stage developer specifies which smart contract variant will be generated. During the second stage preprocessor generates source code. Once that's done, you can procede with compilation as usually.
 
 #### Configuration
 
-If your Solidity source code contains C macros that enable/disable certain pieces of code, inclusion is dependent on macros. If a feature needs to be enabled, it should have its corresponding flag defined in the file `config.h`, e.g., `#define CONFIG_HAS_OWNER 1`. This file can be written by hand or it can be generated via the KConfig confifuration tool `kconfig-conf`. The tool takes a definition of project features in KConfig spec format, asks developer questions interactively, and outputs a `.config` file. Run `config2header.sh` to generate `config.h` from `.config`.
+If your Solidity source code contains C macros that enable/disable certain pieces of code, inclusion is dependent on macros. If a feature needs to be enabled, it should have its corresponding flag defined in the file `config.h`, e.g., `#define CONFIG_HAS_OWNER 1`. This file can be written by hand or it can be generated via the KConfig configuration tool `kconfig-conf`. The tool takes a definition of project features in KConfig spec format, asks developer questions interactively, and outputs a `.config` file. Run `config2header.sh` to generate `config.h` from `.config`.
 
 #### Prebuild
 
 Assuming that you already have Solidity source code annotated with C macros, the `config.h` file, and `.env` file, you can run it as `node prebuild-scripts/prebuild-variant.js`.
 Configuration options in the `.env` file:
 - `SPL_SRC_CONTRACTS_DIR` - input directory that contains Solidity files annotated with C macros. Example: `./contracts-spl`.
-- `SPL_OUT_CONTRACTS_DIR` - output directory that will contain Solidity files for a specific variant (ready to be compiled). Example: `./contracts`
+- `SPL_OUT_CONTRACTS_DIR` - output directory that will contain Solidity files for a specific variant (ready to be compiled). Example: `./contracts`.
 - `SPL_CONFIG_HEADER` - path to the `config.h` file. Example: `./config.h`.
 - `SPL_SRC_TESTS_DIR` - (optional) input directory that contains test files annotated with C macros. Example: `./test-spl`.
 - `SPL_OUT_TESTS_DIR` - (optional) output directory that will contain test files for a specific variant (ready to be run). Example: `./test`.
