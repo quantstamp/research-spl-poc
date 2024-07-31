@@ -22,7 +22,7 @@ The repository contains:
 ### Prebuild Scripts
 
 - `prebuild-variant.js` - a Node.js script that runs `gcc` C language preprocessor over Solidity source code files to generate a specific variant. It expects a set of parameters defined in project's `.env` file (see below). Apart from the source code, the tool requires a C header file with feature flags that enable/disable specific parts of the Solidity source code.
-- `config2header.sh` - you may find this script useful if you use KConfig configuration tool [`kconfig-conf`](https://ports.macports.org/port/kconfig-frontends/) for configuring the smart contract family (to obtain specify a variant). The script takes the output file `.config` of the KConfig configuration tool and generates the header file that `prebuild-variant.js` can consume. 
+- `config2header.sh` - you may find this script useful if you use KConfig configuration tool [`kconfig-conf`](https://ports.macports.org/port/kconfig-frontends/) for configuring the smart contract family (to obtain a specific variant). The script takes the output file `.config` of the KConfig configuration tool and generates the header file that `prebuild-variant.js` can consume. 
 
 ### Usage
 
